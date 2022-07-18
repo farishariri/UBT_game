@@ -54,10 +54,10 @@ class Player {
 // x and y is where the platform is placed
 
 class Platform {
-    constructor() {
+    constructor({x, y}) {
         this.position = {
-            x: 500,
-            y: 800
+            x,
+            y
         }
 
         this.width = 200
@@ -74,9 +74,13 @@ class Platform {
 
 // Creating a "player" object and displaying them on the screen
 // creating a "platform" object and displaying them on the screen
+//add/edit new platforms from here
 
 const player = new Player()
-const platform = new Platform()
+const platforms = [new Platform({x: 300, y: 600})
+    , new Platform({x: 600, y: 800})
+    , new Platform({x: 700, y: 400}) 
+]
 
 const keys = {
     right: {
@@ -94,19 +98,40 @@ function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
     player.update()
-    platform.draw()
+    platforms.forEach((platform) => {
+        platform.draw()
+    })
+    
 
-    if (keys.right.pressed) {
+    if (keys.right.pressed && player.position.x < 800) {
         player.velocity.x = 5
-    } else if (keys.left.pressed) {
+    } else if (keys.left.pressed && player.position.x > 100) {
         player.velocity.x = -5
-    } else player.velocity.x = 0
+    } else {
+        player.velocity.x = 0
+
+        if (keys.right.pressed){
+            platforms.forEach((platform) => {
+                platform.position.x -= 5
+            })
+            
+        }
+        else if (keys.left.pressed){
+            platforms.forEach((platform) => {
+                platform.position.x +=5
+            })
+            
+        }
+    }
 
     //platform collision detection
+    platforms.forEach((platform) => {
+    
     if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x && player.position.x <= platform.position.x + platform.width
         ) {
         player.velocity.y = 0
     }
+    })
 
 }
 
