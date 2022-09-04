@@ -54,7 +54,7 @@ class Player {
 // x and y is where the platform is placed
 
 class Platform {
-    constructor({x, y}) {
+    constructor({ x, y }) {
         this.position = {
             x,
             y
@@ -77,9 +77,9 @@ class Platform {
 //add/edit new platforms from here
 
 const player = new Player()
-const platforms = [new Platform({x: 300, y: 600})
-    , new Platform({x: 600, y: 800})
-    , new Platform({x: 700, y: 400}) 
+const platforms = [new Platform({ x: 200, y: 1000 })
+    , new Platform({ x: 600, y: 800 })
+    , new Platform({ x: 900, y: 1100 })
 ]
 
 const keys = {
@@ -91,6 +91,9 @@ const keys = {
     },
 }
 
+// Win Scenario
+
+let scrollOffset = 0
 
 // Gravity
 
@@ -101,7 +104,7 @@ function animate() {
     platforms.forEach((platform) => {
         platform.draw()
     })
-    
+
 
     if (keys.right.pressed && player.position.x < 800) {
         player.velocity.x = 5
@@ -110,28 +113,39 @@ function animate() {
     } else {
         player.velocity.x = 0
 
-        if (keys.right.pressed){
+        if (keys.right.pressed) {
+            scrollOffset += 5
             platforms.forEach((platform) => {
                 platform.position.x -= 5
             })
-            
+
         }
-        else if (keys.left.pressed){
+        else if (keys.left.pressed) {
+            scrollOffset -= 5
             platforms.forEach((platform) => {
-                platform.position.x +=5
+                platform.position.x += 5
             })
-            
+
         }
     }
 
     //platform collision detection
     platforms.forEach((platform) => {
-    
-    if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x && player.position.x <= platform.position.x + platform.width
+
+        if (player.position.y + player.height <= platform.position.y &&
+            player.position.y + player.height + player.velocity.y >= platform.position.y &&
+            player.position.x + player.width >= platform.position.x &&
+            player.position.x <= platform.position.x + platform.width
         ) {
-        player.velocity.y = 0
-    }
+            player.velocity.y = 0
+        }
     })
+
+    // If you scroll past 2000 you win
+
+    if (scrollOffset > 2000) {
+        console.log("You Win")
+    }
 
 }
 
