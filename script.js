@@ -4,10 +4,10 @@ const canvas = document.querySelector('canvas')
 
 const c = canvas.getContext('2d')
 
-// canvas properties so it fits the whole screen
+// canvas properties
 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+canvas.width = 1024
+canvas.height = 576
 
 //gravity speed
 
@@ -54,32 +54,38 @@ class Player {
 // x and y is where the platform is placed
 
 class Platform {
-    constructor({ x, y }) {
+    constructor({ x, y, image }) {
         this.position = {
             x,
             y
         }
 
-        this.width = 200
-        this.height = 20
+        this.image = image
+        this.width = image.width
+        this.height = image.height
+
     }
 
+    // Replaced the rectangles with an image
+
     draw() {
-        c.fillStyle = 'blue'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
 
+// Adding platform images
 
+const image = new Image()
+image.src = './img/platform.png'
+console.log(image)
 
 // Creating a "player" object and displaying them on the screen
 // creating a "platform" object and displaying them on the screen
 //add/edit new platforms from here
 
 const player = new Player()
-const platforms = [new Platform({ x: 200, y: 1000 })
-    , new Platform({ x: 600, y: 800 })
-    , new Platform({ x: 900, y: 1100 })
+const platforms = [new Platform({ x: -50, y: 470, image })
+    , new Platform({ x: image.width - 150, y: 470, image })
 ]
 
 const keys = {
@@ -99,11 +105,14 @@ let scrollOffset = 0
 
 function animate() {
     requestAnimationFrame(animate)
-    c.clearRect(0, 0, canvas.width, canvas.height)
-    player.update()
+    c.fillStyle = 'white'
+    c.fillRect(0, 0, canvas.width, canvas.height)
+
     platforms.forEach((platform) => {
         platform.draw()
     })
+
+    player.update()
 
 
     if (keys.right.pressed && player.position.x < 800) {
