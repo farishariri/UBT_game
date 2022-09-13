@@ -73,11 +73,35 @@ class Platform {
     }
 }
 
+class GenericObject {
+    constructor({ x, y, background }) {
+        this.position = {
+            x,
+            y
+        
+        }
+
+        this.background = background
+        this.width = background.width
+        this.height = background.height
+
+    }
+
+    // Replaced the rectangles with an image
+
+    draw() {
+        c.drawImage(this.background, this.position.x, this.position.y)
+    }
+}
+
 // Adding platform images
 
 const image = new Image()
 image.src = './img/platform.png'
+const background = new Image()
+background.src = './img/background.png'
 console.log(image)
+console.log(background)
 
 // Creating a "player" object and displaying them on the screen
 // creating a "platform" object and displaying them on the screen
@@ -86,6 +110,16 @@ console.log(image)
 const player = new Player()
 const platforms = [new Platform({ x: -50, y: 470, image })
     , new Platform({ x: image.width - 150, y: 470, image })
+]
+
+
+const genericObjects = [
+    new GenericObject({
+        x: 0,
+        y: 0,
+        background
+        
+    })
 ]
 
 const keys = {
@@ -107,6 +141,10 @@ function animate() {
     requestAnimationFrame(animate)
     c.fillStyle = 'white'
     c.fillRect(0, 0, canvas.width, canvas.height)
+
+    genericObjects.forEach((genericObject) => {
+        genericObject.draw()
+    })
 
     platforms.forEach((platform) => {
         platform.draw()
