@@ -6,7 +6,7 @@ const c = canvas.getContext('2d')
 
 // canvas properties
 
-canvas.width = 1024
+canvas.width = 1440
 canvas.height = 576
 
 //gravity speed
@@ -45,7 +45,7 @@ class Player {
 
         if (this.position.y + this.height + this.velocity.y <= canvas.height)
             this.velocity.y += Gravity
-        else this.velocity.y = 0
+
     }
 
 }
@@ -78,7 +78,7 @@ class GenericObject {
         this.position = {
             x,
             y
-        
+
         }
 
         this.background = background
@@ -95,30 +95,30 @@ class GenericObject {
 }
 
 // Adding platform images
+// Adding background image
 
 const image = new Image()
 image.src = './img/platform.png'
 const background = new Image()
-background.src = './img/background.png'
-console.log(image)
-console.log(background)
+background.src = './img/bg.png'
+
 
 // Creating a "player" object and displaying them on the screen
 // creating a "platform" object and displaying them on the screen
 //add/edit new platforms from here
 
-const player = new Player()
-const platforms = [new Platform({ x: -50, y: 470, image })
-    , new Platform({ x: image.width - 150, y: 470, image })
+let player = new Player()
+let platforms = [new Platform({ x: -50, y: 470, image })
+    , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image })
 ]
 
 
-const genericObjects = [
+let genericObjects = [
     new GenericObject({
         x: 0,
         y: 0,
         background
-        
+
     })
 ]
 
@@ -131,11 +131,34 @@ const keys = {
     },
 }
 
-// Win Scenario
 
 let scrollOffset = 0
 
-// Gravity
+// Function to reset the player to the start of the level if they fail
+
+function reset() {
+
+    player = new Player()
+    platforms = [new Platform({ x: -50, y: 470, image })
+        , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image })
+    ]
+
+
+    genericObjects = [
+        new GenericObject({
+            x: 0,
+            y: 0,
+            background
+
+        })
+    ]
+
+    scrollOffset = 0
+
+}
+
+
+// Animate loop
 
 function animate() {
     requestAnimationFrame(animate)
@@ -165,14 +188,14 @@ function animate() {
             platforms.forEach((platform) => {
                 platform.position.x -= 5
             })
-
+            genericObjects.forEach(genericObject => { genericObject.position.x -= 3 })
         }
         else if (keys.left.pressed) {
             scrollOffset -= 5
             platforms.forEach((platform) => {
                 platform.position.x += 5
             })
-
+            genericObjects.forEach(genericObject => { genericObject.position.x += 3 })
         }
     }
 
@@ -188,10 +211,15 @@ function animate() {
         }
     })
 
-    // If you scroll past 2000 you win
+    // Win condition
 
     if (scrollOffset > 2000) {
         console.log("You Win")
+    }
+
+    // Lose Condition
+    if (player.position.y > canvas.height) {
+        reset()
     }
 
 }
