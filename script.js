@@ -1,3 +1,33 @@
+// Adding platform images
+// Adding background image
+
+let image = new Image()
+image.src = './img/Platform_Street.png'
+
+let square = new Image()
+square.src = './img/Platform_Square.png'
+
+let background = new Image()
+background.src = './img/bg.png'
+
+let StandRight = new Image()
+StandRight.src = './img/StandRight.png'
+
+let StandLeft = new Image()
+StandLeft.src = './img/StandLeft.png'
+
+let WalkRight = new Image()
+WalkRight.src = './img/WalkRight.png'
+
+let WalkLeft = new Image()
+WalkLeft.src = './img/Walkleft.png'
+
+let JumpRight = new Image()
+JumpRight.src = './img/JumpRight.png'
+
+let JumpLeft = new Image()
+JumpLeft.src = './img/JumpLeft.png'
+
 // storing the HTML canvas element in a "constant" called canvas
 
 const canvas = document.querySelector('canvas')
@@ -17,6 +47,7 @@ const Gravity = 0.5
 
 class Player {
     constructor() {
+        this.speed = 5
         this.position = {
             x: 100,
             y: 100
@@ -25,16 +56,32 @@ class Player {
             x: 0,
             y: 0
         }
-        this.width = 30
-        this.height = 30
+        this.width = 66
+        this.height = 150
+
+        this.image = StandRight
+        this.frames = 0
+
     }
 
     draw() {
-        c.fillStyle = 'red'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.drawImage(
+            this.image,
+            215 * this.frames,
+            0,
+            215,
+            430,
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height)
+        /*c.fillStyle = 'red'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)*/
     }
 
     update() {
+        this.frames++
+        if (this.frames > 28) this.frames = 0
         this.draw()
 
         this.position.x += this.velocity.x
@@ -94,33 +141,13 @@ class GenericObject {
     }
 }
 
-// Adding platform images
-// Adding background image
-
-const image = new Image()
-image.src = './img/platform.png'
-const background = new Image()
-background.src = './img/bg.png'
-
-
 // Creating a "player" object and displaying them on the screen
 // creating a "platform" object and displaying them on the screen
 //add/edit new platforms from here
 
 let player = new Player()
-let platforms = [new Platform({ x: -50, y: 470, image })
-    , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image })
-]
-
-
-let genericObjects = [
-    new GenericObject({
-        x: 0,
-        y: 0,
-        background
-
-    })
-]
+let platforms = []
+let genericObjects = []
 
 const keys = {
     right: {
@@ -140,7 +167,8 @@ function reset() {
 
     player = new Player()
     platforms = [new Platform({ x: -50, y: 470, image })
-        , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image })
+        , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image }),
+    new Platform({ x: image.width * 3 + 30, y: 470, image })
     ]
 
 
@@ -177,25 +205,25 @@ function animate() {
 
 
     if (keys.right.pressed && player.position.x < 800) {
-        player.velocity.x = 5
-    } else if (keys.left.pressed && player.position.x > 100) {
-        player.velocity.x = -5
+        player.velocity.x = player.speed
+    } else if ((keys.left.pressed && player.position.x > 100) || (keys.left.pressed & scrollOffset === 0 & player.position.x > 0)) {
+        player.velocity.x = -player.speed
     } else {
         player.velocity.x = 0
 
         if (keys.right.pressed) {
-            scrollOffset += 5
+            scrollOffset += player.speed
             platforms.forEach((platform) => {
-                platform.position.x -= 5
+                platform.position.x -= player.speed
             })
-            genericObjects.forEach(genericObject => { genericObject.position.x -= 3 })
+            genericObjects.forEach(genericObject => { genericObject.position.x -= player.speed * 0.65 })
         }
-        else if (keys.left.pressed) {
-            scrollOffset -= 5
+        else if (keys.left.pressed && scrollOffset > 0) {
+            scrollOffset -= player.speed
             platforms.forEach((platform) => {
-                platform.position.x += 5
+                platform.position.x += player.speed
             })
-            genericObjects.forEach(genericObject => { genericObject.position.x += 3 })
+            genericObjects.forEach(genericObject => { genericObject.position.x += player.speed * 0.65 })
         }
     }
 
@@ -224,6 +252,7 @@ function animate() {
 
 }
 
+reset()
 animate()
 
 //Player Movement
@@ -248,7 +277,7 @@ addEventListener("keydown", ({ keyCode }) => {
 
         case 87:
             console.log("up")
-            player.velocity.y -= 20
+            player.velocity.y -= 15
             break
     }
 
