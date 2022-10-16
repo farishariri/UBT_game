@@ -7,6 +7,9 @@ image.src = './img/Platform_Street.png'
 let square = new Image()
 square.src = './img/Platform_Square.png'
 
+let genie = new Image()
+genie.src = './img/genie.png'
+
 let background = new Image()
 background.src = './img/bg.png'
 
@@ -47,7 +50,7 @@ const Gravity = 0.5
 
 class Player {
     constructor() {
-        this.speed = 5
+        this.speed = 10
         this.position = {
             x: 100,
             y: 100
@@ -112,6 +115,50 @@ class Platform {
         this.height = image.height
 
     }
+    
+    
+
+    // Replaced the rectangles with an image
+
+    draw() {
+        c.drawImage(this.image, this.position.x, this.position.y)
+    }
+}
+class Platform_Square {
+    constructor({ x, y, image }) {
+        this.position = {
+            x,
+            y
+        }
+
+        this.image = square
+        this.width = image.width
+        this.height = image.height
+
+    }
+    
+    
+
+    // Replaced the rectangles with an image
+
+    draw() {
+        c.drawImage(this.image, this.position.x, this.position.y)
+    }
+}
+class object {
+    constructor({ x, y, image: genie }) {
+        this.position = {
+            x,
+            y
+        }
+
+        this.image = genie
+        this.width = image.width
+        this.height = image.height
+
+    }
+    
+    
 
     // Replaced the rectangles with an image
 
@@ -168,7 +215,15 @@ function reset() {
     player = new Player()
     platforms = [new Platform({ x: -50, y: 470, image })
         , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image }),
-    new Platform({ x: image.width * 3 + 30, y: 470, image })
+    new Platform({ x: image.width * 3 , y: 470, image }), new Platform_Square({ x: square.width * 16 + 30, y: 300, image: square })
+    ,
+    new Platform({ x: image.width * 4.6 + 30, y: 470, image })
+    ,
+    new Platform({ x: image.width * 5.6 , y: 470, image })
+    ,
+    new Platform({ x: image.width * 6.6 -5 , y: 470, image })
+    ,
+    new object({ x: image.width * 7 + 710 , y: 200, image: genie })
     ]
 
 
@@ -277,7 +332,7 @@ addEventListener("keydown", ({ keyCode }) => {
 
         case 87:
             console.log("up")
-            player.velocity.y -= 15
+            player.velocity.y -= 30
             break
     }
 
