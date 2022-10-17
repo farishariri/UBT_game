@@ -35,6 +35,12 @@ JumpLeft.src = './img/JumpLeft.png'
 
 const canvas = document.querySelector('canvas')
 
+const scoreG = document.querySelector('#scoreG')
+const scoreH = document.querySelector('#scoreH')
+const scoreC = document.querySelector('#scoreC')
+const scoreW = document.querySelector('#scoreW')
+const scoreB = document.querySelector('#scoreB')
+
 const c = canvas.getContext('2d')
 
 // canvas properties
@@ -125,15 +131,15 @@ class Platform {
     }
 }
 class Platform_Square {
-    constructor({ x, y, image }) {
+    constructor({ x, y, image: square }) {
         this.position = {
             x,
             y
         }
 
         this.image = square
-        this.width = image.width
-        this.height = image.height
+        this.width = square.width
+        this.height = square.height
 
     }
     
@@ -215,9 +221,9 @@ function reset() {
     player = new Player()
     platforms = [new Platform({ x: -50, y: 470, image })
         , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image }),
-    new Platform({ x: image.width * 3 , y: 470, image }), new Platform_Square({ x: square.width * 16 + 30, y: 300, image: square })
+    new Platform({ x: image.width * 3 , y: 470, image }), new Platform_Square({ x: image.width * 4+180 , y: 300, image: square })
     ,
-    new Platform({ x: image.width * 4.6 + 30, y: 470, image })
+    new Platform({ x: image.width * 4.7 + 30, y: 470, image })
     ,
     new Platform({ x: image.width * 5.6 , y: 470, image })
     ,
