@@ -8,4 +8,14 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    
+}
+
+canvas{
+    border-radius: 15px;
+}
+
+p {
+ font-family: 'Courier New', Courier, monospace;
+ color: white;   
 }

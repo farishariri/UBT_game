@@ -1,6 +1,14 @@
 // Adding platform images
 // Adding background image
 
+const list = document.getElementById("list")
+list.style.display = ''
+
+/*window.addEventListener("click", () =>{
+    const list = document.getElementById("list")
+    list.style.display = ""
+})*/
+
 let image = new Image()
 image.src = './img/Platform_Street.png'
 
@@ -50,13 +58,13 @@ canvas.height = 576
 
 //gravity speed
 
-const Gravity = 0.5
+const Gravity = 1   
 
 // Player Creation
 
 class Player {
     constructor() {
-        this.speed = 10
+        this.speed = 6
         this.position = {
             x: 100,
             y: 100
@@ -151,7 +159,10 @@ class Platform_Square {
         c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
-class object {
+
+// Class for the genie
+
+class npc {
     constructor({ x, y, image: genie }) {
         this.position = {
             x,
@@ -159,8 +170,9 @@ class object {
         }
 
         this.image = genie
-        this.width = image.width
-        this.height = image.height
+        this.width = genie.width
+        this.height = genie.height
+        this.display=""
 
     }
     
@@ -195,11 +207,14 @@ class GenericObject {
 }
 
 // Creating a "player" object and displaying them on the screen
-// creating a "platform" object and displaying them on the screen
-//add/edit new platforms from here
+
+// Creating a "platform" object and displaying them on the screen
+
+// Creating a Genie object and displaying him on the screen
 
 let player = new Player()
 let platforms = []
+let blueMan = []
 let genericObjects = []
 
 const keys = {
@@ -218,9 +233,14 @@ let scrollOffset = 0
 
 function reset() {
 
+    blueMan = [new npc({ x: 1050 , y: 100, image: genie })]
+
     player = new Player()
-    platforms = [new Platform({ x: -50, y: 470, image })
-        , new Platform({ x: image.width - 150, y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image }),
+
+    // Add/edit new platforms from here
+    
+    platforms = [new Platform({ x: 0, y: 470, image })
+        , new Platform({ x: image.width - 3 , y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image }),
     new Platform({ x: image.width * 3 , y: 470, image }), new Platform_Square({ x: image.width * 4+180 , y: 300, image: square })
     ,
     new Platform({ x: image.width * 4.7 + 30, y: 470, image })
@@ -228,9 +248,11 @@ function reset() {
     new Platform({ x: image.width * 5.6 , y: 470, image })
     ,
     new Platform({ x: image.width * 6.6 -5 , y: 470, image })
-    ,
-    new object({ x: image.width * 7 + 710 , y: 200, image: genie })
+    
+   
     ]
+
+    
 
 
     genericObjects = [
@@ -262,6 +284,10 @@ function animate() {
         platform.draw()
     })
 
+    blueMan.forEach((blueMan) => {
+        blueMan.draw()
+    })
+
     player.update()
 
 
@@ -272,10 +298,16 @@ function animate() {
     } else {
         player.velocity.x = 0
 
+        // Moving platforms and images when the player moves
+        // If you want any image to move when the chracter moves add it here
+ 
         if (keys.right.pressed) {
             scrollOffset += player.speed
             platforms.forEach((platform) => {
                 platform.position.x -= player.speed
+            })
+            blueMan.forEach((blueMan) => {
+                blueMan.position.x -= player.speed
             })
             genericObjects.forEach(genericObject => { genericObject.position.x -= player.speed * 0.65 })
         }
@@ -283,6 +315,9 @@ function animate() {
             scrollOffset -= player.speed
             platforms.forEach((platform) => {
                 platform.position.x += player.speed
+            })
+            blueMan.forEach((blueMan) => {
+                blueMan.position.x += player.speed
             })
             genericObjects.forEach(genericObject => { genericObject.position.x += player.speed * 0.65 })
         }
