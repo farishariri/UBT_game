@@ -18,6 +18,9 @@ square.src = './img/Platform_Square.png'
 let genie = new Image()
 genie.src = './img/genie.png'
 
+let genieDialogue = new Image()
+genieDialogue.src = './img/genieDialogue.png'
+
 let background = new Image()
 background.src = './img/bg.png'
 
@@ -50,6 +53,84 @@ const scoreW = document.querySelector('#scoreW')
 const scoreB = document.querySelector('#scoreB')
 
 const c = canvas.getContext('2d')
+
+// Text Box
+
+var container = document.querySelector(".text");
+
+var speeds ={
+pause: 500, //Higher number = longer delay
+   slow: 120,
+   normal: 90,
+   fast: 40,
+   superFast: 10
+}
+
+// Add dialogue text here!!!
+
+var textLines =[
+    {string: "Hey!", speed: speeds.normal},
+    {string: "Whats Up", speed: speeds.fast}
+]
+
+var characters = [];
+
+// Adds space between words
+
+textLines.forEach((line, index) => {
+   
+    if (index < textLines.length - 1) {
+      line.string += " "; //Add a space between lines
+   }
+
+   // Split each letter and display it as a span
+
+   line.string.split("").forEach((character) => {
+      
+      var span = document.createElement("span");
+      span.textContent = character;
+      container.appendChild(span);
+      
+      characters.push({
+         span: span,
+         isSpace: character === " " && !line.pause,
+         
+         // Speed of text being shown
+         delayAfter: line.speed,
+         
+         // Add classes to spans
+         classes: line.classes || []
+
+      });
+   });
+});
+
+function revealOneCharacter(list) {
+   
+   // Take the first character in the word and select it  
+   var next = list.splice(0, 1)[0];
+
+   // Add a class revealed to spans so CSS can be applied to it and change opacity
+   next.span.classList.add("revealed");
+   next.classes.forEach((c) => {
+      next.span.classList.add(c);
+   });
+   var delay = next.isSpace && !next.pause ? 0 : next.delayAfter;
+
+   if (list.length > 0) {
+      setTimeout(function () {
+         revealOneCharacter(list);
+      }, delay);
+   }
+}
+
+//Kick it off
+setTimeout(() => {
+   revealOneCharacter(characters);   
+}, 600)
+
+
+
 
 // canvas properties
 
@@ -138,6 +219,7 @@ class Platform {
         c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
+
 class Platform_Square {
     constructor({ x, y, image: square }) {
         this.position = {
@@ -160,6 +242,50 @@ class Platform_Square {
     }
 }
 
+class buttonGreen {
+    constructor({x, y}) {
+        this.position = {
+            x,
+            y
+        }
+
+        this.width = 200
+        this.height = 80
+
+    }
+    
+    
+
+    // Replaced the rectangles with an image
+
+    draw() {
+        c.fillStyle = '#B05252'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
+}
+
+class buttonBlue {
+    constructor({x, y}) {
+        this.position = {
+            x,
+            y
+        }
+
+        this.width = 200
+        this.height = 80
+
+    }
+    
+    
+
+    // Replaced the rectangles with an image
+
+    draw() {
+        c.fillStyle = '#428ED6'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
+}
+
 // Class for the genie
 
 class npc {
@@ -172,8 +298,6 @@ class npc {
         this.image = genie
         this.width = genie.width
         this.height = genie.height
-        this.display=""
-
     }
     
     
@@ -184,6 +308,17 @@ class npc {
         c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
+
+/*let text = document.createElement("p");
+let node = document.createTextNode("Hey there little Fella! So you going to college huh? You want some help with picking your major? keep playing and we will figue that out :)");
+text.appendChild(node);
+
+let element = document.getElementById("text");
+element.appendChild(text);
+
+document.getElementById("text").style.marginLeft = "320px"
+document.getElementById("text").style.marginBottom = "317px"*/
+
 
 class GenericObject {
     constructor({ x, y, background }) {
@@ -214,8 +349,10 @@ class GenericObject {
 
 let player = new Player()
 let platforms = []
+let buttons = []
 let blueMan = []
 let genericObjects = []
+
 
 const keys = {
     right: {
@@ -235,13 +372,15 @@ function reset() {
 
     blueMan = [new npc({ x: 1050 , y: 100, image: genie })]
 
+    buttons = [new buttonGreen({ x: 1581 , y:220}), new buttonBlue({ x: 2100 , y:220})]
+
     player = new Player()
 
     // Add/edit new platforms from here
     
     platforms = [new Platform({ x: 0, y: 470, image })
-        , new Platform({ x: image.width - 3 , y: 470, image }), new Platform({ x: image.width * 2 + 30, y: 470, image }),
-    new Platform({ x: image.width * 3 , y: 470, image }), new Platform_Square({ x: image.width * 4+180 , y: 300, image: square })
+        , new Platform({ x: image.width - 3 , y: 470, image }), new Platform({ x: image.width * 2 - 5, y: 470, image }),
+    new Platform({ x: image.width * 3 - 7, y: 470, image }), new Platform_Square({ x: image.width * 4+180 , y: 300, image: square })
     ,
     new Platform({ x: image.width * 4.7 + 30, y: 470, image })
     ,
@@ -283,13 +422,19 @@ function animate() {
     platforms.forEach((platform) => {
         platform.draw()
     })
+    
+    buttons.forEach((buttons) => {
+        buttons.draw()
+    })
 
     blueMan.forEach((blueMan) => {
         blueMan.draw()
     })
+    
 
     player.update()
 
+    
 
     if (keys.right.pressed && player.position.x < 800) {
         player.velocity.x = player.speed
@@ -309,7 +454,11 @@ function animate() {
             blueMan.forEach((blueMan) => {
                 blueMan.position.x -= player.speed
             })
+            buttons.forEach((buttons) => {
+                buttons.position.x -= player.speed
+            })
             genericObjects.forEach(genericObject => { genericObject.position.x -= player.speed * 0.65 })
+            
         }
         else if (keys.left.pressed && scrollOffset > 0) {
             scrollOffset -= player.speed
@@ -319,10 +468,16 @@ function animate() {
             blueMan.forEach((blueMan) => {
                 blueMan.position.x += player.speed
             })
+            
+            buttons.forEach((buttons) => {
+                buttons.position.x += player.speed
+            })
             genericObjects.forEach(genericObject => { genericObject.position.x += player.speed * 0.65 })
+            
         }
     }
 
+    
     //platform collision detection
     platforms.forEach((platform) => {
 
@@ -330,6 +485,17 @@ function animate() {
             player.position.y + player.height + player.velocity.y >= platform.position.y &&
             player.position.x + player.width >= platform.position.x &&
             player.position.x <= platform.position.x + platform.width
+        ) {
+            player.velocity.y = 0
+        }
+    })
+
+    buttons.forEach((buttons) => {
+
+        if (player.position.y + player.height <= buttons.position.y &&
+            player.position.y + player.height + player.velocity.y >= buttons.position.y &&
+            player.position.x + player.width >= buttons.position.x &&
+            player.position.x <= buttons.position.x + buttons.width
         ) {
             player.velocity.y = 0
         }
@@ -375,9 +541,26 @@ addEventListener("keydown", ({ keyCode }) => {
             console.log("up")
             player.velocity.y -= 30
             break
+            
+        case 70:
+            console.log("Hide text")
+            var box = document.querySelector('.dBox')
+            box.style.display='none'
+            var textBox = document.querySelector('.text')
+            textBox.style.display='none'
+            break
+            
+        case 71:
+            console.log("show text")
+            var box = document.querySelector('.dBox')
+            box.style.display=''
+            var textBox = document.querySelector('.text')
+            textBox.style.display=''
+            break 
     }
 
 })
+
 
 addEventListener("keyup", ({ keyCode }) => {
 
@@ -404,3 +587,5 @@ addEventListener("keyup", ({ keyCode }) => {
     }
 
 })
+
+

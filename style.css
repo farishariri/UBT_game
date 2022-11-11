@@ -19,3 +19,18 @@ p {
  font-family: 'Courier New', Courier, monospace;
  color: white;   
 }
+
+.text span {
+    opacity: 0;
+    font-family: 'Courier New', Courier, monospace;
+ }
+ .text span.revealed {
+    opacity: 1;
+ }
+ .text span.green {
+    color: #27ae60;
+ }
+ .text span.red {
+    color: #ff0000;
+ }
+ 
