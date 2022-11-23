@@ -73,6 +73,7 @@ var textLines =[
     {string: "Whats Up", speed: speeds.fast}
 ]
 
+
 var characters = [];
 
 // Adds space between words
@@ -242,7 +243,7 @@ class Platform_Square {
     }
 }
 
-class buttonGreen {
+class buttonRed {
     constructor({x, y}) {
         this.position = {
             x,
@@ -372,7 +373,7 @@ function reset() {
 
     blueMan = [new npc({ x: 1050 , y: 100, image: genie })]
 
-    buttons = [new buttonGreen({ x: 1581 , y:220}), new buttonBlue({ x: 2100 , y:220})]
+    buttons = [new buttonRed({ x: 1581 , y:220}), new buttonBlue({ x: 2100 , y:220})]
 
     player = new Player()
 
@@ -507,6 +508,15 @@ function animate() {
         console.log("You Win")
     }
 
+    if (scrollOffset >= 750 && scrollOffset <= 950){
+        console.log("NO") 
+        document.getElementById("text").innerHTML = "Dew u gett my pointt??"
+        
+        
+    
+            
+    }
+
     // Lose Condition
     if (player.position.y > canvas.height) {
         reset()
@@ -587,5 +597,6 @@ addEventListener("keyup", ({ keyCode }) => {
     }
 
 })
+
 
 
