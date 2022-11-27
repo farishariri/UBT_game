@@ -523,6 +523,10 @@ function animate() {
             player.position.x <= buttons.position.x + buttons.width
         ) {
             player.velocity.y = 0
+            if (scrollOffset >= 750 && scoreI.innerHTML==0){
+                scoreI.innerHTML= parseFloat(scoreI.innerHTML) + 3;
+            }
+            
         }
     })
 
