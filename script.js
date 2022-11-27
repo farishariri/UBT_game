@@ -4,6 +4,9 @@
 const list = document.getElementById("list")
 list.style.display = ''
 
+
+
+
 /*window.addEventListener("click", () =>{
     const list = document.getElementById("list")
     list.style.display = ""
@@ -46,15 +49,36 @@ JumpLeft.src = './img/JumpLeft.png'
 
 const canvas = document.querySelector('canvas')
 
-const scoreG = document.querySelector('#scoreG')
-const scoreH = document.querySelector('#scoreH')
+const scoreI = document.querySelector('#scoreI')
+const scoreE = document.querySelector('#scoreE')
+const scoreA = document.querySelector('#scoreA')
 const scoreC = document.querySelector('#scoreC')
-const scoreW = document.querySelector('#scoreW')
-const scoreB = document.querySelector('#scoreB')
+const scoreS = document.querySelector('#scoreS')
+const scoreM = document.querySelector('#scoreM')
 
 const c = canvas.getContext('2d')
 
+// toggle button function to show and hide score
+const dBox = document.querySelector('#dBox')
+
+const togglebtn = document.querySelector('#togglebtn')
+
+togglebtn.addEventListener('click' , () => {
+    if(list.style.display === 'none') {
+        list.style.display = 'block' ;
+        togglebtn.innerHTML = 'Hide Score';
+    } else{
+        list.style.display = 'none'
+        togglebtn.innerHTML = 'Show Score';
+    }
+})
+
+// press f to show/hide dialoge
+
+
+
 // Text Box
+
 
 var container = document.querySelector(".text");
 
@@ -553,20 +577,23 @@ addEventListener("keydown", ({ keyCode }) => {
             break
             
         case 70:
+            if(dBox.style.display ===''){
             console.log("Hide text")
             var box = document.querySelector('.dBox')
             box.style.display='none'
             var textBox = document.querySelector('.text')
             textBox.style.display='none'
             break
+        }
             
-        case 71:
+        else{
             console.log("show text")
             var box = document.querySelector('.dBox')
             box.style.display=''
             var textBox = document.querySelector('.text')
             textBox.style.display=''
             break 
+        }
     }
 
 })
@@ -600,3 +627,5 @@ addEventListener("keyup", ({ keyCode }) => {
 
 
 
+const sm = document.getElementById("sm")
+sm.style.display = ''
