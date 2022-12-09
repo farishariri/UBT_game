@@ -174,7 +174,7 @@ const Gravity = 1
 
 class Player {
     constructor() {
-        this.speed = 10
+        this.speed = 6
         this.position = {
             x: 100,
             y: 100
