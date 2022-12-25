@@ -171,7 +171,7 @@ p {
    
  }
  
- #multiplayer:hover {
+ #info:hover {
    background:#7A0000;
    color:white;
     
@@ -189,7 +189,7 @@ p {
    
  }
  
- #options:hover {
+ #BUTTONS:hover {
    background:#7A0000;
    color:white;
    -webkit-transform:rotate(-2deg);
@@ -235,7 +235,7 @@ p {
    
  }
  
- #multiplayer {
+ #info {
    height:50px;
    width:500px;
    background:#006680;
@@ -253,14 +253,14 @@ p {
     
    
  }
- #multiplayer p {
+ #info p {
    position:relative;
    top:0px;
    right:9px;
    
  }
  
- #options {
+ #BUTTONS {
    
    height:50px;
    width:400px;
@@ -278,7 +278,7 @@ p {
    
  }
  
- #options p {
+ #BUTTONS p {
    position:relative;
    top:0px;
    right:4px;
