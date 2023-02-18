@@ -2,15 +2,8 @@
 // Adding background image
 
 const list = document.getElementById("list")
-list.style.display = ''
+list.style.display = 'none'
 
-
-
-
-/*window.addEventListener("click", () =>{
-    const list = document.getElementById("list")
-    list.style.display = ""
-})*/
 
 let image = new Image()
 image.src = './img/Platform_Street.png'
@@ -23,6 +16,9 @@ platformJump.src = './img/PlatformJump.png'
 
 let genie = new Image()
 genie.src = './img/genie.png'
+
+let genieThanks = new Image()
+genieThanks.src = './img/genieThanks.png'
 
 let genieDialogue = new Image()
 genieDialogue.src = './img/genieDialogue.png'
@@ -55,6 +51,7 @@ const c = canvas.getContext('2d')
 const scoreBoard = document.querySelector('#list')
 
 // toggle button function to show and hide score
+
 const dBox = document.querySelector('#dBox')
 
 const togglebtn = document.querySelector('#togglebtn')
@@ -168,13 +165,13 @@ canvas.height = 576
 
 //gravity speed
 
-const Gravity = 1   
+const Gravity = 1 
 
 // Player Creation
 
 class Player {
     constructor() {
-        this.speed = 6
+        this.speed = 26
         this.position = {
             x: 100,
             y: 100
@@ -340,17 +337,6 @@ class npc {
     }
 }
 
-/*let text = document.createElement("p");
-let node = document.createTextNode("Hey there little Fella! So you going to college huh? You want some help with picking your major? keep playing and we will figue that out :)");
-text.appendChild(node);
-
-let element = document.getElementById("text");
-element.appendChild(text);
-
-document.getElementById("text").style.marginLeft = "320px"
-document.getElementById("text").style.marginBottom = "317px"*/
-
-
 class GenericObject {
     constructor({ x, y, background }) {
         this.position = {
@@ -426,7 +412,9 @@ function reset() {
         ,
         new npc({ x: 26600 , y: 100, image: genie })
         ,
-        new npc({ x: 28100 , y: 100, image: genie })]
+        new npc({ x: 28100 , y: 100, image: genie })
+        ,
+        new npc({ x: 29050 , y: 20, image: genieThanks })]
 
     // NO button positioning
     
@@ -524,7 +512,9 @@ function reset() {
     ,
     new Platform({ x: 26500, y: 470, image })
     ,
-    new Platform({ x: 27700, y: 470, image })]
+    new Platform({ x: 27700, y: 470, image })
+    ,
+    new Platform_Square({ x: 29110 , y: 500, image: square})]
 
     
 
@@ -1063,7 +1053,7 @@ addEventListener("keydown", ({ keyCode }) => {
 
         case 87:
             console.log("up")
-            player.velocity.y -= 30
+            player.velocity.y -= 40
             break
             
         case 70:
