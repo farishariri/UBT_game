@@ -1,1 +1,1 @@
-# UBT_game
+# This game was made for the University Of Business & Technology by Faris  Hariri (User:farishariri) & Khalid Alfaidi (User:Mokuhito). Check "Master" branch for code.
